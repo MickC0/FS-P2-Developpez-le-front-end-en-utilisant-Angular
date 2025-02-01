@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import {Color, ScaleType} from "@swimlane/ngx-charts";
+import {IconDefinition} from "@fortawesome/angular-fontawesome";
+import { faMedal } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-home',
@@ -25,6 +27,9 @@ export class HomeComponent implements OnInit {
     selectable: true,
     group: ScaleType.Ordinal,
   };
+
+  //icon
+  public faMedal: IconDefinition = faMedal;
 
   constructor(private olympicService: OlympicService) {}
 
