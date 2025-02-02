@@ -1,0 +1,39 @@
+<div class="details-container">
+  <h2>{{ countryData?.country }}</h2>
+  <div class="info-cards">
+    <div class="info-card">
+      <span>Number of entries</span>
+      <h3>{{ totalEntries }}</h3>
+    </div>
+    <div class="info-card">
+      <span>Total number medals</span>
+      <h3>{{ totalMedals }}</h3>
+    </div>
+    <div class="info-card">
+      <span>Total number of athletes</span>
+      <h3>{{ totalAthletes }}</h3>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <ngx-charts-line-chart
+      [results]="lineChartData"
+      [view]="view"
+      [legend]="legend"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [scheme]="colorScheme"
+      [autoScale]="true"
+    >
+    </ngx-charts-line-chart>
+  </div>
+
+  <button class="back-button" (click)="goBack()">
+    Back
+  </button>
+
+</div>

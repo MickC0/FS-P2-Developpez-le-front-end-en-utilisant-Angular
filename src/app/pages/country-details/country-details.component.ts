@@ -1,0 +1,84 @@
+import {Component, OnInit} from '@angular/core';
+import {Olympic} from "../../core/models/Olympic";
+import {LineChartModule, ScaleType} from "@swimlane/ngx-charts";
+import {ActivatedRoute, Router} from "@angular/router";
+import {OlympicService} from "../../core/services/olympic.service";
+import {Subscription} from "rxjs";
+
+@Component({
+  selector: 'app-country-details',
+  imports: [
+    LineChartModule
+  ],
+  templateUrl: './country-details.component.html',
+  styleUrl: './country-details.component.scss'
+})
+export class CountryDetailsComponent implements OnInit{
+  private sub!: Subscription;
+  countryName!: string;
+  countryData!: Olympic;
+
+  totalEntries = 0;
+  totalMedals = 0;
+  totalAthletes = 0;
+
+  lineChartData: any[] = [];
+  view: [number, number] = [700, 400];
+  colorScheme = {
+    domain: ['#793D52'],
+    group: ScaleType.Ordinal,
+    selectable: true,
+    name: 'singleSeries'
+  };
+  legend = false;
+  showXAxis = true;
+  showYAxis = true;
+  showXAxisLabel = true;
+  showYAxisLabel = true;
+  xAxisLabel = 'Years';
+  yAxisLabel = 'Medals';
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private olympicService: OlympicService
+  ) {}
+
+  ngOnInit(): void {
+    this.countryName = this.route.snapshot.paramMap.get('countryName') || '';
+    this.sub = this.olympicService.getOlympics().subscribe((olympics: Olympic[]) => {
+      const found = olympics.find(o => o.country === this.countryName);
+      if (!found) {
+        this.router.navigate(['/not-found']);
+        return;
+      }
+      this.countryData = found;
+
+      this.totalEntries = found.participations.length;
+      this.totalMedals = found.participations
+        .reduce((acc, p) => acc + p.medalsCount, 0);
+      this.totalAthletes = found.participations
+        .reduce((acc, p) => acc + p.athleteCount, 0);
+
+      this.lineChartData = [
+        {
+          name: this.countryName,
+          series: found.participations.map(part => ({
+            name: part.year.toString(),
+            value: part.medalsCount
+          }))
+        }
+      ];
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
+
+}
