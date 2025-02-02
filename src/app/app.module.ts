@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule, provideHttpClient} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,9 +11,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, PieChartModule, FontAwesomeModule, HomeComponent, NotFoundComponent],
+  imports: [BrowserModule, AppRoutingModule, PieChartModule, FontAwesomeModule, HomeComponent, NotFoundComponent],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient()
   ],
   bootstrap: [AppComponent],
 })

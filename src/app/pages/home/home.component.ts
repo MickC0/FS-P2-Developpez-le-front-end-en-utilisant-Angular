@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import {Color, PieChartModule, ScaleType} from "@swimlane/ngx-charts";
 import {FaIconComponent, IconDefinition} from "@fortawesome/angular-fontawesome";
@@ -17,9 +17,8 @@ import {Router} from "@angular/router";
   ]
 })
 export class HomeComponent implements OnInit {
-  public olympics$: Observable<Olympic[]> = of([]);
+  private sub!: Subscription;
 
-  //pie chart
   public chartData: {name: string, value: number}[] = [];
   public view: [number, number] = [700, 400];
   public gradient = false;
@@ -33,12 +32,10 @@ export class HomeComponent implements OnInit {
     group: ScaleType.Ordinal,
   };
 
-  //icon
   public faMedal: IconDefinition = faMedal;
 
-  // Exemple de stats à afficher dans les "cards"
-  public totalJOs = 0;        // Valeur d'exemple
-  public totalCountries = 0;  // Valeur d'exemple
+  public totalJOs = 0;
+  public totalCountries = 0;
 
   constructor(
     private olympicService: OlympicService,
@@ -46,7 +43,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.olympicService.getOlympics().subscribe({
+    this.sub = this.olympicService.getOlympics().subscribe({
       next: (olympics: Olympic[]) => {
         this.totalCountries = olympics.length;
         const allYears = new Set<number>();
@@ -65,6 +62,11 @@ export class HomeComponent implements OnInit {
       },
       error: (error) => console.error('Erreur lors du chargement des données', error)
     });
+  }
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   onSelect(selectedItem: { name: string; value: number }) {
