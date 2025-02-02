@@ -10,8 +10,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, PieChartModule, FontAwesomeModule, HomeComponent],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, PieChartModule, FontAwesomeModule, HomeComponent, NotFoundComponent],
   providers: [
     provideAnimationsAsync()
   ],

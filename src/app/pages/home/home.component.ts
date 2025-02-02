@@ -14,9 +14,6 @@ import {Router} from "@angular/router";
   imports: [
     PieChartModule,
     FaIconComponent,
-
-
-
   ]
 })
 export class HomeComponent implements OnInit {
@@ -70,9 +67,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onSelect(selectedItem: { name: string, value: number }): void {
-    // Par exemple, la route attend un paramètre "country"
+  onSelect(selectedItem: { name: string; value: number }) {
     this.router.navigate(['/detail', selectedItem.name]);
   }
-
 }
