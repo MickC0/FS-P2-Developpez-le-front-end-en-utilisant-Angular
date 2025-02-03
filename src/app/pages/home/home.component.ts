@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable, of, Subscription} from 'rxjs';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import {Color, PieChartModule, ScaleType} from "@swimlane/ngx-charts";
 import {FaIconComponent, IconDefinition} from "@fortawesome/angular-fontawesome";
@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setChartSize();
     this.sub = this.olympicService.getOlympics().subscribe({
       next: (olympics: Olympic[]) => {
         this.totalCountries = olympics.length;
@@ -71,5 +72,19 @@ export class HomeComponent implements OnInit {
 
   onSelect(selectedItem: { name: string; value: number }) {
     this.router.navigate(['/detail', selectedItem.name]);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.setChartSize();
+  }
+
+  setChartSize() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 600) {
+      this.view = [screenWidth * 0.9, 300];
+    } else {
+      this.view = [700, 400];
+    }
   }
 }
