@@ -1,5 +1,9 @@
 <div class="details-container">
   <h2>{{ countryData?.country }}</h2>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
   <div class="info-cards">
     <div class="info-card">
       <span>Number of entries</span>

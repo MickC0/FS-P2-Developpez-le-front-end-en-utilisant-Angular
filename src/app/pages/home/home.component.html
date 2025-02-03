@@ -1,5 +1,9 @@
 <div class="home-container">
   <h2>Medals per Country</h2>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
   <div class="info-cards">
     <div class="info-card">
       <span>Number of JOs</span>

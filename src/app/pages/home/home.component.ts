@@ -6,6 +6,7 @@ import {FaIconComponent, IconDefinition} from "@fortawesome/angular-fontawesome"
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
 import {Olympic} from "../../core/models/Olympic";
 import {Router} from "@angular/router";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -14,10 +15,12 @@ import {Router} from "@angular/router";
   imports: [
     PieChartModule,
     FaIconComponent,
+    NgIf,
   ]
 })
 export class HomeComponent implements OnInit {
   private sub!: Subscription;
+  public errorMessage: string | null = null;
 
   public chartData: {name: string, value: number}[] = [];
   public view: [number, number] = [700, 400];
@@ -61,7 +64,10 @@ export class HomeComponent implements OnInit {
           return { name: olympic.country, value: totalMedals };
         });
       },
-      error: (error) => console.error('Erreur lors du chargement des données', error)
+      error: (error) => {
+        console.error('Erreur lors du chargement des données', error);
+        this.errorMessage = "Une erreur est survenue lors du chargement des données. Veuillez réessayer plus tard.";
+      }
     });
   }
   ngOnDestroy() {
