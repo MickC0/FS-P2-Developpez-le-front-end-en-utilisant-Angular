@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Olympic} from "../../core/models/Olympic";
 import {LineChartModule, ScaleType} from "@swimlane/ngx-charts";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -45,6 +45,7 @@ export class CountryDetailsComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.setChartSize();
     this.countryName = this.route.snapshot.paramMap.get('countryName') || '';
     this.sub = this.olympicService.getOlympics().subscribe((olympics: Olympic[]) => {
       const found = olympics.find(o => o.country === this.countryName);
@@ -79,6 +80,20 @@ export class CountryDetailsComponent implements OnInit{
   }
   goBack(): void {
     this.router.navigate(['/home']);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.setChartSize();
+  }
+
+  setChartSize() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 600) {
+      this.view = [screenWidth * 0.9, 300];
+    } else {
+      this.view = [700, 400];
+    }
   }
 
 }
